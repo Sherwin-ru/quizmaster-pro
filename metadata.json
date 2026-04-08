@@ -1,0 +1,5 @@
+{
+  "name": "QuizMaster Pro",
+  "description": "A real-time online quiz platform with admin management, student dashboards, and instant result tracking.",
+  "requestFramePermissions": []
+}

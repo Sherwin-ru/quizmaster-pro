@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information including role (admin/student).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "student"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Quiz": {
+      "title": "Quiz",
+      "description": "A quiz with 10 questions.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "timerMinutes": { "type": "number" },
+        "createdBy": { "type": "string", "description": "Admin UID" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isPublished": { "type": "boolean" }
+      },
+      "required": ["title", "timerMinutes", "createdBy"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "A multiple-choice question.",
+      "type": "object",
+      "properties": {
+        "quizId": { "type": "string" },
+        "text": { "type": "string" },
+        "options": { "type": "array", "items": { "type": "string" } },
+        "correctOptionIndex": { "type": "number" },
+        "order": { "type": "number" }
+      },
+      "required": ["quizId", "text", "options", "correctOptionIndex"]
+    },
+    "Attempt": {
+      "title": "Quiz Attempt",
+      "description": "A student's attempt at a quiz.",
+      "type": "object",
+      "properties": {
+        "quizId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "score": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "startTime": { "type": "string", "format": "date-time" },
+        "endTime": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["in-progress", "completed"] }
+      },
+      "required": ["quizId", "userId", "startTime", "status"]
+    },
+    "LiveSession": {
+      "title": "Live Session",
+      "description": "Tracks users currently taking a quiz.",
+      "type": "object",
+      "properties": {
+        "quizId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["quizId", "userId", "lastActive"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/quizzes/{quizId}": { "schema": "Quiz", "description": "Quizzes" },
+    "/quizzes/{quizId}/questions/{questionId}": { "schema": "Question", "description": "Questions for a quiz" },
+    "/attempts/{attemptId}": { "schema": "Attempt", "description": "Quiz attempts" },
+    "/live_sessions/{sessionId}": { "schema": "LiveSession", "description": "Live sessions" }
+  }
+}
